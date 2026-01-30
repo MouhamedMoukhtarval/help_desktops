@@ -16,7 +16,15 @@ class TechnicianHomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const HomeTechnicienHead(),
+            HomeTechnicienHead(
+              technicianName: 'John Doe',
+              pendingCount: 0,
+              activeCount: 3,
+              doneCount: 10,
+              urgentCount: 0,
+              overdueCount: 0,
+              onMenuPressed: ()=> 'Menu Pressed',
+            ),
             const Divider(
               thickness: 1.0,
               color: AppColorsManager.white,

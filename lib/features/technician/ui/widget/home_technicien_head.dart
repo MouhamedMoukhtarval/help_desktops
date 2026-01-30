@@ -1,40 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:help_desktops/core/helpers/spacing.dart';
-import 'package:help_desktops/core/theming/app_colors_manager.dart';
-import 'package:help_desktops/features/technician/ui/widget/home_technician_head/grreeting_technician_home_head.dart';
+import 'package:help_desktops/core/theming/app_color_manager.dart';
+import 'package:help_desktops/core/theming/app_spacing.dart';
+import 'package:help_desktops/features/technician/ui/widget/home_technician_head/alert_banner.dart';
 import 'package:help_desktops/features/technician/ui/widget/home_technician_head/home_technicien_top_bar.dart';
 import 'package:help_desktops/features/technician/ui/widget/home_technician_head/technician_tickets_states.dart';
 
 class HomeTechnicienHead extends StatelessWidget {
-  const HomeTechnicienHead({super.key});
+  final String technicianName;
+  final int pendingCount;
+  final int activeCount;
+  final int doneCount;
+  final int urgentCount;
+  final int overdueCount;
+  final VoidCallback? onMenuPressed;
+  final Function(String)? onStateTap;
+
+  const HomeTechnicienHead({
+    super.key,
+    required this.technicianName,
+    required this.pendingCount,
+    required this.activeCount,
+    required this.doneCount,
+    required this.urgentCount,
+    required this.overdueCount,
+    this.onMenuPressed,
+    this.onStateTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300.h,
+      padding: EdgeInsets.only(top: 20.h),
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       decoration: BoxDecoration(
-        color: AppColorsManager.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.r),
-          bottomRight: Radius.circular(20.r),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            AppColorManager.warmBeige,
+            AppColorManager.lightWarmGrey,
+            AppColorManager.white,
+          ],
+          stops: [0.0, 0.5, 1.0],
         ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(28.r),
+          bottomRight: Radius.circular(28.r),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const HomeTechnicienTopBar(),
-          const Divider(
-            thickness: 1.0,
-            color: AppColorsManager.lighterGray,
-            indent: 0.0,
-            endIndent: 0.0,
+          TechnicianTopBar(
+            onMenuPressed: onMenuPressed,
           ),
-          spacingVertical(5.0),
-          const GrreetingTechnicianHomeHead(),
-          const TechnicianTicketsStates(),
+          
+          spacingVertical(AppSpacing.lg),
+          
+          AlertBanner(
+            urgentCount: urgentCount,
+            overdueCount: overdueCount,
+          ),
+          
+          spacingVertical(AppSpacing.xl),
+          
+          TechnicianTicketsStates(
+            pendingCount: pendingCount,
+            activeCount: activeCount,
+            doneCount: doneCount,
+            onStateTap: onStateTap,
+          ),
+          
+          SizedBox(height: 24.h),
         ],
       ),
     );

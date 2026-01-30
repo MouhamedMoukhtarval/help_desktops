@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:help_desktops/features/technician/ui/widget/home_technician_body/empty_card_ticket.dart';
+import 'package:help_desktops/features/technician/ui/widget/home_technician_body/ticket_card.dart';
 
-import 'package:help_desktops/core/widgets/ticket_container_details.dart';
 
 class TechnicianHomeScreenBody extends StatelessWidget {
-  const TechnicianHomeScreenBody({super.key});
+  final List<dynamic>? tickets; 
+  final Function(int)? onStartWorking;
+  final Function(int)? onResolve;
+
+  const TechnicianHomeScreenBody({
+    super.key,
+     this.tickets,
+     this.onStartWorking,
+     this.onResolve,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (tickets == null || tickets!.isEmpty) {
+      return const EmptyTicketsView();
+    }
+
     return ListView.builder(
-        itemCount: 2,
-        itemBuilder: (context, index) => const TicketContainerDetails(),
+      padding: EdgeInsets.only(top: 8.h, bottom: 16.h),
+      itemCount: tickets!.length,
+      itemBuilder: (context, index) {
+        final ticket = tickets![index];
+        return EnhancedTicketCard(
+          ticket: ticket,
+          onStartWorking: () => onStartWorking!(ticket.id),
+          onResolve: () => onResolve!(ticket.id),
+        );
+      },
     );
   }
 }

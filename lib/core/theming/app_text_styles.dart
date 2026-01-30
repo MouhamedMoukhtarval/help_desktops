@@ -26,6 +26,11 @@ class AppTextStyles {
     fontWeight: AppTextFontWeight.medium,
     color: AppColorsManager.lighterGray,
   );
+  static TextStyle font14GrayShadeMedium = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: AppTextFontWeight.medium,
+    color: AppColorsManager.grayShade,
+  );
   static TextStyle font14MainBlueMedium = TextStyle(
     fontSize: 14.sp,
     fontWeight: AppTextFontWeight.medium,
@@ -42,7 +47,7 @@ class AppTextStyles {
     color: AppColorsManager.moreGreen,
   );
 
-  static TextStyle font14LighteGrayRegular = TextStyle(
+  static TextStyle font14LighterGrayRegular = TextStyle(
     fontSize: 14.sp,
     fontWeight: AppTextFontWeight.regular,
     color: AppColorsManager.lighterGray,
@@ -70,5 +75,36 @@ class AppTextStyles {
     fontSize: 16.sp,
     fontWeight: AppTextFontWeight.semiBold,
     color: AppColorsManager.darkBlue,
+  );
+
+  static TextStyle font12RedRegular = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: AppTextFontWeight.regular,
+    color: AppColorsManager.red,
+  );
+
+  // static TextStyle font20Black87Bold = TextStyle(
+  //   fontSize: 20.sp,
+  //   fontWeight: AppTextFontWeight.bold,
+  //   color: AppColorsManager.black87,
+  // );
+
+  static TextStyle font18Black87Bold = TextStyle(
+    fontSize: 18.sp,
+    fontWeight: AppTextFontWeight.bold,
+    color: AppColorsManager.black87,
+  );
+
+  static TextStyle font17Black87Bold = TextStyle(
+    fontSize: 17.sp,
+    fontWeight: AppTextFontWeight.bold,
+    color: AppColorsManager.black87,
+  );
+
+  static TextStyle font14GrayShade700Height1_4 = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: AppTextFontWeight.regular,
+    color: AppColorsManager.grayShade700,
+    height: 1.4,
   );
 }

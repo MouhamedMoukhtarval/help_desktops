@@ -21,3 +21,6 @@ extension NavigatorExtension on BuildContext {
     this,
   ).pushNamedAndRemoveUntil(routeName, predicate, arguments: arguments);
 }
+extension StringExtension on String? {
+  bool isNullOrEmpty() => this == null || this!.isEmpty;
+}
