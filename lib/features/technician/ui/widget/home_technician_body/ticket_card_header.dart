@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:help_desktops/features/technician/ui/widget/home_technician_body/ticket_card_markdart';
+import 'package:help_desktops/features/technician/ui/widget/home_technician_body/ticket_card_mark.dart';
 
 
 class TicketCardHeader extends StatelessWidget {
