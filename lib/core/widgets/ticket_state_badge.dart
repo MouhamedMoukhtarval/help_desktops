@@ -7,6 +7,7 @@ class TicketStateBadge extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final Color glowColor;
+  final bool isSelected;  // ← NEW!
   final VoidCallback? onTap;
 
   const TicketStateBadge({
@@ -16,6 +17,7 @@ class TicketStateBadge extends StatelessWidget {
     required this.backgroundColor,
     required this.textColor,
     required this.glowColor,
+    this.isSelected = false,  // ← افتراضي false
     this.onTap,
   });
 
@@ -29,11 +31,14 @@ class TicketStateBadge extends StatelessWidget {
           vertical: 14.h,
         ),
         decoration: BoxDecoration(
-          color: backgroundColor,
+          // لون أغمق إذا selected
+          color: isSelected
+              ? backgroundColor.withValues(alpha: 0.3)
+              : backgroundColor,
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: glowColor.withValues(alpha: 0.4),
-            width: 1.5,
+            color: glowColor.withValues(alpha: isSelected ? 0.8 : 0.4),
+            width: isSelected ? 3 : 1.5,  // ← حدود أعرض إذا selected
           ),
           boxShadow: [
             BoxShadow(
@@ -41,9 +46,10 @@ class TicketStateBadge extends StatelessWidget {
               blurRadius: 8,
               offset: Offset(0, 2),
             ),
+            // glow أقوى إذا selected
             BoxShadow(
-              color: glowColor.withValues(alpha: 0.15),
-              blurRadius: 12,
+              color: glowColor.withValues(alpha: isSelected ? 0.25 : 0.15),
+              blurRadius: isSelected ? 16 : 12,
               offset: Offset(0, 0),
               spreadRadius: -2,
             ),
@@ -52,7 +58,6 @@ class TicketStateBadge extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // العدد - كبير وبارز
             Text(
               count.toString(),
               style: TextStyle(
@@ -63,15 +68,12 @@ class TicketStateBadge extends StatelessWidget {
                 letterSpacing: -0.5,
               ),
             ),
-            
             SizedBox(height: 6.h),
-            
-            // التسمية
             Text(
               label,
               style: TextStyle(
                 fontSize: 12.sp,
-                fontWeight: FontWeight.w600,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
                 color: textColor.withValues(alpha: 0.85),
                 letterSpacing: 0.5,
               ),
