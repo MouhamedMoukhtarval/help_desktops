@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:help_desktops/features/technician/data/models/ticket_response.dart';
 import 'package:help_desktops/features/technician/ui/widget/home_technician_body/ticket_action_button.dart';
 import 'package:help_desktops/features/technician/ui/widget/home_technician_body/ticket_card_content.dart';
 import 'package:help_desktops/features/technician/ui/widget/home_technician_body/ticket_card_footer.dart';
 import 'package:help_desktops/features/technician/ui/widget/home_technician_body/ticket_card_header.dart';
 
 class EnhancedTicketCard extends StatelessWidget {
-  final TicketResponse ticket;
+  final dynamic ticket;
   final VoidCallback onStartWorking;
   final VoidCallback onResolve;
 
@@ -19,8 +18,8 @@ class EnhancedTicketCard extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final isActive = ticket.status == 'en_cours';
-    final isDone = ticket.status == 'ferme';
+    final isActive = ticket.statut == 'en_cours';
+    final isDone = ticket.statut == 'ferme';
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -29,7 +28,7 @@ class EnhancedTicketCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         border: Border(
           left: BorderSide(
-            color: _getPriorityColor(ticket.priority!),
+            color: _getPriorityColor(ticket.priorite),
             width: 4.w,
           ),
         ),
@@ -46,17 +45,17 @@ class EnhancedTicketCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TicketCardHeader(statut: ticket.status!, ticketId: ticket.id!),
+            TicketCardHeader(statut: ticket.statut, ticketId: ticket.id),
             SizedBox(height: 12.h),
             TicketCardContent(
-              titre: ticket.title!,
-              description: ticket.description!,
+              titre: ticket.titre,
+              description: ticket.description,
               pieceJointe: ticket.pieceJointe,
             ),
             SizedBox(height: 12.h),
             TicketCardFooter(
-              username: ticket.employee!.username!,
-              dateCreation: DateTime.parse(ticket.dateCreation!),
+              username: ticket.creeParUsername,
+              dateCreation: ticket.dateCreation,
             ),
             if (!isDone) ...[
               SizedBox(height: 16.h),
