@@ -112,7 +112,7 @@ class TechnicianHomeCubit extends Cubit<TechHomeStates> {
   // ========== Computed Properties ==========
   int get pendingCount => state.maybeWhen(
         success: (tickets, _, selectedPriority, dateFrom, dateTo) {
-          final filteredTickets = tickets.where((t) => t.status!.toLowerCase() == 'nouveau' );
+          final filteredTickets = tickets.where((t) => t.status?.toLowerCase() == 'nouveau' );
           return filteredTickets.length;
         },
         orElse: () => 0,
@@ -120,7 +120,7 @@ class TechnicianHomeCubit extends Cubit<TechHomeStates> {
 
   int get activeCount => state.maybeWhen(
         success: (tickets, _, selectedPriority, dateFrom, dateTo) {
-          final filteredTickets = tickets.where((t) => t.status!.toLowerCase() == 'en_cours');
+          final filteredTickets = tickets.where((t) => t.status?.toLowerCase() == 'en_cours');
           return filteredTickets.length;
         },
         orElse: () => 0,
@@ -128,7 +128,7 @@ class TechnicianHomeCubit extends Cubit<TechHomeStates> {
 
   int get doneCount => state.maybeWhen(
         success: (tickets, _, selectedPriority, dateFrom, dateTo) {
-          final filteredTickets = tickets.where((t) => t.status!.toLowerCase() == 'ferme');
+          final filteredTickets = tickets.where((t) => t.status?.toLowerCase() == 'ferme');
           return filteredTickets.length;
         },
         orElse: () => 0,
@@ -137,8 +137,8 @@ class TechnicianHomeCubit extends Cubit<TechHomeStates> {
   int get urgentCount => state.maybeWhen(
         success: (tickets, _, selectedPriority, dateFrom, dateTo) => tickets
             .where((t) =>
-                t.priority!.toLowerCase() == 'haute' &&
-                t.status!.toLowerCase() != 'ferme')
+                t.priority?.toLowerCase() == 'haute' &&
+                t.status?.toLowerCase() != 'ferme')
             .length,
         orElse: () => 0,
       );
@@ -147,10 +147,9 @@ class TechnicianHomeCubit extends Cubit<TechHomeStates> {
         success: (tickets, _, selectedPriority, dateFrom, dateTo) {
           final now = DateTime.now();
           return tickets.where((t) {
-            if (t.status!.toLowerCase() == 'ferme') return false;
-
+            if (t.status?.toLowerCase() == 'ferme') return false;
             final age = now.difference(DateTime.parse(t.dateCreation!));
-            final priorite = t.priority!.toLowerCase();
+            final priorite = t.priority?.toLowerCase();
 
             if (priorite == 'haute') return age.inHours > 24;
             if (priorite == 'moyenne') return age.inHours > 48;
@@ -172,7 +171,7 @@ class TechnicianHomeCubit extends Cubit<TechHomeStates> {
           // فلتر الأولوية
           if (priorityFilter == 'urgent') {
             result = result
-                .where((t) => t.priority!.toLowerCase() == 'haute')
+                .where((t) => t.priority?.toLowerCase() == 'haute')
                 .toList();
           }
 
@@ -194,7 +193,7 @@ class TechnicianHomeCubit extends Cubit<TechHomeStates> {
     final status = ticketStatus.toLowerCase();
     switch (selectedStatus) {
       case 'pending':
-        return status == 'ouvert';
+        return status == 'nouveau';
       case 'active':
         return status == 'en_cours';
       case 'done':

@@ -12,7 +12,7 @@ part of 'technician_service.dart';
 
 class _TicketService implements TicketService {
   _TicketService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'http://localhost:8000/api';
+    baseUrl ??= 'http://192.168.0.161:8000/api';
   }
 
   final Dio _dio;

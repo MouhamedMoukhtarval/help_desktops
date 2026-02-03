@@ -45,6 +45,7 @@ class HomeTechnicianHead extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      padding: EdgeInsets.only(top: 25.r),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,

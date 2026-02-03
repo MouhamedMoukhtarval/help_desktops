@@ -14,6 +14,7 @@ class TicketResponse {
   String? description;
   @JsonKey(name: 'priorite')
   String? priority;
+  @JsonKey(name: 'statut')
   String? status;
   @JsonKey(name: 'piece_jointe')
   String? pieceJointe;

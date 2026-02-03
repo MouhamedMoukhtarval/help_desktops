@@ -5,33 +5,32 @@ class DioFactory {
   /// private constructor as I don't want to allow creating an instance of this class
   DioFactory._();
 
-  static Dio? _dio;
+  static Dio? dio;
 
   static Dio getDio() {
     Duration timeout = const Duration(seconds: 30);
 
-    if (_dio == null) {
-      _dio = Dio();
-      _dio!
+    if (dio == null) {
+      dio = Dio();
+      dio!
         ..options.connectTimeout = timeout
         ..options.receiveTimeout = timeout;
       addHeaders();
       addDioInterceptor();
-      return _dio!;
+      return dio!;
     } else {
-      return _dio!;
+      return dio!;
     }
   }
   static void addHeaders(){
-    _dio!.options.headers={
-      'Content-Type':'application/json',
-      'Accept':'application/json',
-      'Authorization':'Bearer YOUR_TOKEN'
+    dio!.options.headers={
+      'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwMTI1NzUyLCJpYXQiOjE3NzAxMjM5NTMsImp0aSI6ImIwOTE2ZWVlYzI1YTQ0N2Q5MTlmZjJmNjU2OGJlY2IyIiwidXNlcl9pZCI6IjI2In0.fkqyr6pRChULtf0louL6IHL37U9IqGS1UggeiAKZprU'
     };
   }
 
   static void addDioInterceptor() {
-    _dio?.interceptors.add(
+    dio!.interceptors.add(
       PrettyDioLogger(
         requestBody: true,
         requestHeader: true,
