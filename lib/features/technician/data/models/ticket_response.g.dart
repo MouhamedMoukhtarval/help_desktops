@@ -6,6 +6,7 @@ part of 'ticket_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+<<<<<<< HEAD
 TicketResponse _$TicketResponseFromJson(Map<String, dynamic> json) =>
     TicketResponse(
       id: (json['id'] as num?)?.toInt(),
@@ -37,6 +38,38 @@ Map<String, dynamic> _$TicketResponseToJson(TicketResponse instance) =>
       'date_creation': instance.dateCreation,
       'date_resolution': instance.dateResolution,
     };
+=======
+Ticket _$TicketFromJson(Map<String, dynamic> json) => Ticket(
+  id: (json['id'] as num?)?.toInt(),
+  employee: json['cree_par'] == null
+      ? null
+      : Employee.fromJson(json['cree_par'] as Map<String, dynamic>),
+  technician: json['assigne_a'] == null
+      ? null
+      : Technician.fromJson(json['assigne_a'] as Map<String, dynamic>),
+  title: json['title'] as String?,
+  description: json['description'] as String?,
+  priority: json['priorite'] as String?,
+  status: json['status'] as String?,
+  pieceJointe: json['piece_jointe'] as String?,
+  dateCreation: json['date_creation'] as String?,
+  dateResolution: json['date_resolution'] as String?,
+);
+
+// ignore: unused_element
+Map<String, dynamic> _$TicketToJson(Ticket instance) => <String, dynamic>{
+  'id': instance.id,
+  'cree_par': instance.employee,
+  'assigne_a': instance.technician,
+  'title': instance.title,
+  'description': instance.description,
+  'priorite': instance.priority,
+  'status': instance.status,
+  'piece_jointe': instance.pieceJointe,
+  'date_creation': instance.dateCreation,
+  'date_resolution': instance.dateResolution,
+};
+>>>>>>> 6f70889232fc4a3bd0ace7db60272dffdafe0d78
 
 Employee _$EmployeeFromJson(Map<String, dynamic> json) => Employee(
   id: (json['id'] as num?)?.toInt(),
@@ -45,6 +78,7 @@ Employee _$EmployeeFromJson(Map<String, dynamic> json) => Employee(
   role: json['role'] as String?,
 );
 
+// ignore: unused_element
 Map<String, dynamic> _$EmployeeToJson(Employee instance) => <String, dynamic>{
   'id': instance.id,
   'username': instance.username,
@@ -59,6 +93,7 @@ Technician _$TechnicianFromJson(Map<String, dynamic> json) => Technician(
   role: json['role'] as String?,
 );
 
+// ignore: unused_element
 Map<String, dynamic> _$TechnicianToJson(Technician instance) =>
     <String, dynamic>{
       'id': instance.id,

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -40,3 +41,5 @@ class DioFactory {
   }
 
 }
+=======
+>>>>>>> 6f70889232fc4a3bd0ace7db60272dffdafe0d78

@@ -3,13 +3,12 @@ import 'package:json_annotation/json_annotation.dart';
 part 'ticket_response.g.dart';
 
 @JsonSerializable()
-class TicketResponse {
+class Ticket {
   int? id;
   @JsonKey(name: 'cree_par')
   Employee? employee;
   @JsonKey(name: 'assigne_a')
   Technician? technician;
-  @JsonKey(name: 'titre')
   String? title;
   String? description;
   @JsonKey(name: 'priorite')
@@ -23,7 +22,7 @@ class TicketResponse {
   @JsonKey(name: 'date_resolution')
   String? dateResolution;
 
-  TicketResponse({
+  Ticket({
     this.id,
     this.employee,
     this.technician,
@@ -35,7 +34,7 @@ class TicketResponse {
     this.dateCreation,
     this.dateResolution,
   });
-  factory TicketResponse.fromJson(Map<String, dynamic> json) => _$TicketResponseFromJson(json);
+  factory Ticket.fromJson(Map<String, dynamic> json) => _$TicketFromJson(json);
 }
 
 @JsonSerializable()
