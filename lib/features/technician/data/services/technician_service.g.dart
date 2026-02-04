@@ -12,7 +12,7 @@ part of 'technician_service.dart';
 
 class _TicketService implements TicketService {
   _TicketService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'http://192.168.0.161:8000/api';
+    baseUrl ??= 'http://192.168.100.6:8000/api';
   }
 
   final Dio _dio;
@@ -53,7 +53,7 @@ class _TicketService implements TicketService {
   }
 
   @override
-  Future<TicketResponse> updateTicketStatus(
+  Future<TicketStartWorkResponse> updateTicketStatus(
     int ticketId,
     Map<String, String> statusUpdate,
   ) async {
@@ -62,20 +62,20 @@ class _TicketService implements TicketService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(statusUpdate);
-    final _options = _setStreamType<TicketResponse>(
+    final _options = _setStreamType<TicketStartWorkResponse>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/tickets/{ticketId}/status/',
+            '/tickets/${ticketId}/status/',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late TicketResponse _value;
+    late TicketStartWorkResponse _value;
     try {
-      _value = TicketResponse.fromJson(_result.data!);
+      _value = TicketStartWorkResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

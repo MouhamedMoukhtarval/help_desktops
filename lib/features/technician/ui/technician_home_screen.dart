@@ -28,7 +28,7 @@ class TechnicianHomeScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
               
-              success: (tickets, selectedStatus, priorityFilter, dateFrom, dateTo) {
+              success: (_,tickets, selectedStatus, priorityFilter, dateFrom, dateTo) {
                 final cubit = context.read<TechnicianHomeCubit>();
                 
                 return Column(
