@@ -38,6 +38,22 @@ Map<String, dynamic> _$TicketResponseToJson(TicketResponse instance) =>
       'date_resolution': instance.dateResolution,
     };
 
+TicketStartWorkResponse _$TicketStartWorkResponseFromJson(
+  Map<String, dynamic> json,
+) => TicketStartWorkResponse(
+  message: json['message'] as String?,
+  ticketSWR: json['ticket'] == null
+      ? null
+      : TicketResponse.fromJson(json['ticket'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$TicketStartWorkResponseToJson(
+  TicketStartWorkResponse instance,
+) => <String, dynamic>{
+  'message': instance.message,
+  'ticket': instance.ticketSWR,
+};
+
 Employee _$EmployeeFromJson(Map<String, dynamic> json) => Employee(
   id: (json['id'] as num?)?.toInt(),
   username: json['username'] as String?,

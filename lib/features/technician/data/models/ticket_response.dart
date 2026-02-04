@@ -37,6 +37,15 @@ class TicketResponse {
   });
   factory TicketResponse.fromJson(Map<String, dynamic> json) => _$TicketResponseFromJson(json);
 }
+@JsonSerializable()
+class TicketStartWorkResponse {
+  String ? message;
+  @JsonKey(name: 'ticket')
+  TicketResponse ? ticketSWR;
+  TicketStartWorkResponse({this.message, this.ticketSWR});
+  factory TicketStartWorkResponse.fromJson(Map<String, dynamic> json) =>
+      _$TicketStartWorkResponseFromJson(json);
+}
 
 @JsonSerializable()
 class Employee {

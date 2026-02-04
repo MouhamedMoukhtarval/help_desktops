@@ -3,11 +3,10 @@
 import 'package:flutter/material.dart';
 import '../../core/models/user.dart';
 import 'ui/widget/user_card.dart';
-import 'ui/widget/filter_buttons.dart';
 import 'add_edit_user_screen.dart';
 
 class UsersScreen extends StatefulWidget {
-  const UsersScreen({Key? key}) : super(key: key);
+  const UsersScreen({super.key});
 
   @override
   State<UsersScreen> createState() => _UsersScreenState();

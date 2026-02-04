@@ -6,7 +6,7 @@ import 'package:help_desktops/features/technician/ui/widget/home_technician_body
 
 
 class TechnicianHomeScreenBody extends StatelessWidget {
-  final List<TicketResponse> tickets; 
+  final List<TicketResponse?>? tickets; 
   final Function(int) onStartWorking;
   final Function(int) onResolve;
 
@@ -19,17 +19,17 @@ class TechnicianHomeScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (tickets.isEmpty) {
+    if (tickets!.isEmpty) {
       return const EmptyTicketsView();
     }
 
     return ListView.builder(
       padding: EdgeInsets.only(top: 8.h, bottom: 16.h),
-      itemCount: tickets.length,
+      itemCount: tickets!.length,
       itemBuilder: (context, index) {
-        final ticket = tickets[index];
+        final ticket = tickets![index];
         return EnhancedTicketCard(
-          ticket: ticket,
+          ticket: ticket!,
           onStartWorking: () => onStartWorking(ticket.id!),
           onResolve: () => onResolve(ticket.id!),
         );
