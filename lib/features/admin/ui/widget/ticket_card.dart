@@ -8,10 +8,10 @@ class TicketCard extends StatelessWidget {
   final VoidCallback onAssignTap;
 
   const TicketCard({
-    Key? key,
+    super.key,
     required this.ticket,
     required this.onAssignTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

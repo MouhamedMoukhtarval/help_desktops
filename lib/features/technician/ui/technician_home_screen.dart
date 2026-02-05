@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:help_desktops/core/di/dependcy_injection.dart';
 import 'package:help_desktops/features/technician/logic/tech_home_cubit.dart';
 import 'package:help_desktops/features/technician/logic/tech_home_states.dart';
+import 'package:help_desktops/features/technician/ticket-resolve-feature/logic/resolve_ticket_cubit.dart';
+import 'package:help_desktops/features/technician/ticket-resolve-feature/ui/resolve_ticket_dialog.dart';
 import 'package:help_desktops/features/technician/ui/widget/home_technicien_head.dart';
 import 'package:help_desktops/features/technician/ui/widget/technician_home_screen_body.dart';
 
@@ -18,64 +21,79 @@ class TechnicianHomeScreen extends StatelessWidget {
         child: BlocBuilder<TechnicianHomeCubit, TechHomeStates>(
           buildWhen: (previous, current) {
             // نتجاهل Initial فقط
-            return current is Loading ||
-                current is Success ||
-                current is Error;
+            return current is Loading || current is Success || current is Error;
           },
           builder: (context, state) {
             return state.maybeWhen(
-              loading: () => Center(
-                child: CircularProgressIndicator(),
-              ),
-              
-              success: (_,tickets, selectedStatus, priorityFilter, dateFrom, dateTo) {
-                final cubit = context.read<TechnicianHomeCubit>();
-                
-                return Column(
-                  children: [
-                    // الـ Head
-                    HomeTechnicianHead(
-                      technicianName: 'Technician',  // من Auth/SharedPreferences
-                      pendingCount: cubit.pendingCount,
-                      activeCount: cubit.activeCount,
-                      doneCount: cubit.doneCount,
-                      urgentCount: cubit.urgentCount,
-                      overdueCount: cubit.overdueCount,
-                      selectedStatus: selectedStatus,  // ← من الـ state
-                      priorityFilter: priorityFilter,
-                      dateFrom: dateFrom,
-                      dateTo: dateTo,
-                      onMenuPressed: () {
-                        // فتح drawer/menu
-                      },
-                      onStateTap: (status) {
-                        cubit.selectStatus(status);
-                      },
-                      onPriorityChanged: (filter) {
-                        cubit.setPriorityFilter(filter);
-                      },
-                      onDateChanged: (from, to) {
-                        cubit.setDateFilter(from, to);
-                      },
-                    ),
-                    
-                    Divider(height: 1, thickness: 1),
-                    
-                    // الـ Body
-                    Expanded(
-                      child: TechnicianHomeScreenBody(
-                        tickets: cubit.filteredTickets,
-                        onStartWorking: (id) => cubit.startWorking(id),
-                        onResolve: (id) {
-                          // فتح resolve dialog
-                          // showDialog(...)
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
-              
+              loading: () => Center(child: CircularProgressIndicator()),
+
+              success:
+                  (
+                    _,
+                    tickets,
+                    selectedStatus,
+                    priorityFilter,
+                    dateFrom,
+                    dateTo,
+                  ) {
+                    final cubit = context.read<TechnicianHomeCubit>();
+
+                    return Column(
+                      children: [
+                        // الـ Head
+                        HomeTechnicianHead(
+                          technicianName:
+                              'Technician', // من Auth/SharedPreferences
+                          pendingCount: cubit.pendingCount,
+                          activeCount: cubit.activeCount,
+                          doneCount: cubit.doneCount,
+                          urgentCount: cubit.urgentCount,
+                          overdueCount: cubit.overdueCount,
+                          selectedStatus: selectedStatus, // ← من الـ state
+                          priorityFilter: priorityFilter,
+                          dateFrom: dateFrom,
+                          dateTo: dateTo,
+                          onMenuPressed: () {
+                            // فتح drawer/menu
+                          },
+                          onStateTap: (status) {
+                            cubit.selectStatus(status);
+                          },
+                          onPriorityChanged: (filter) {
+                            cubit.setPriorityFilter(filter);
+                          },
+                          onDateChanged: (from, to) {
+                            cubit.setDateFilter(from, to);
+                          },
+                        ),
+
+                        Divider(height: 1, thickness: 1),
+
+                        // الـ Body
+                        Expanded(
+                          child: TechnicianHomeScreenBody(
+                            tickets: cubit.filteredTickets,
+                            onStartWorking: (id) => cubit.startWorking(id),
+                            onResolve: (ticket) async {
+                              final bool isResolved = await showDialog(
+                                context: context,
+                                builder: (context) => BlocProvider(
+                                  create: (context) =>
+                                      getit<ResolveTicketCubit>(),
+                                  child: ResolveTicketDialog(ticket: ticket),
+                                ),
+                              );
+                              if (isResolved && context.mounted){
+                                // إعادة تحميل التذاكر بعد الحل
+                                context.read<TechnicianHomeCubit>().loadTickets();
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+
               error: (message) => Center(
                 child: Padding(
                   padding: EdgeInsets.all(24.r),
@@ -98,7 +116,8 @@ class TechnicianHomeScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 24.h),
                       ElevatedButton(
-                        onPressed: () => context.read<TechnicianHomeCubit>().loadTickets(),
+                        onPressed: () =>
+                            context.read<TechnicianHomeCubit>().loadTickets(),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
@@ -122,7 +141,7 @@ class TechnicianHomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               orElse: () => SizedBox.shrink(),
             );
           },

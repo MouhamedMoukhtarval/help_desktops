@@ -4,13 +4,26 @@ import 'package:help_desktops/core/networking/dio_factory.dart';
 import 'package:help_desktops/features/technician/data/repos/ticket_repo.dart';
 import 'package:help_desktops/features/technician/data/services/technician_service.dart';
 import 'package:help_desktops/features/technician/logic/tech_home_cubit.dart';
+import 'package:help_desktops/features/technician/ticket-resolve-feature/data/repos/ticket_resolve_repos.dart';
+import 'package:help_desktops/features/technician/ticket-resolve-feature/data/service/resolve_ticket_service.dart';
+import 'package:help_desktops/features/technician/ticket-resolve-feature/logic/resolve_ticket_cubit.dart';
 
 final getit = GetIt.instance;
 Future<void> setupGetIt() async {
   Dio dio = DioFactory.getDio();
-  // Home screen technician 
-  getit.registerLazySingleton<TicketService>(()=> TicketService(dio));
-  getit.registerLazySingleton<TicketRepo>(()=> TicketRepo(getit()));
-  getit.registerFactory<TechnicianHomeCubit>(()=> TechnicianHomeCubit(getit()));
+  // Home screen technician
+  getit.registerLazySingleton<TicketService>(() => TicketService(dio));
+  getit.registerLazySingleton<TicketRepo>(() => TicketRepo(getit()));
+  getit.registerFactory<TechnicianHomeCubit>(
+    () => TechnicianHomeCubit(getit()),
+  );
 
+  // Resolve ticket
+  getit.registerLazySingleton<ResolveTicketService>(
+    () => ResolveTicketService(dio),
+  );
+  getit.registerFactory<ResolveTicketCubit>(() => ResolveTicketCubit(getit(), getit()));
+  getit.registerLazySingleton<TicketResolveRepos>(
+    () => TicketResolveRepos(getit()),
+  );
 }

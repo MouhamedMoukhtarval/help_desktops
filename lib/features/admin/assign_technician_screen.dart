@@ -10,9 +10,9 @@ class AssignTechnicianScreen extends StatefulWidget {
   final Ticket ticket;
 
   const AssignTechnicianScreen({
-    Key? key,
+    super.key,
     required this.ticket,
-  }) : super(key: key);
+  });
 
   @override
   State<AssignTechnicianScreen> createState() => _AssignTechnicianScreenState();

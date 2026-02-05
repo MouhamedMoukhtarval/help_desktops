@@ -7,10 +7,10 @@ class FilterButtons extends StatelessWidget {
   final Function(String) onFilterChanged;
 
   const FilterButtons({
-    Key? key,
+    super.key,
     required this.selectedFilter,
     required this.onFilterChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
