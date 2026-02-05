@@ -38,8 +38,8 @@ class AppTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      maxLines: maxLines ?? 5,
-      minLines: minLines ?? 3,
+      maxLines: maxLines ?? 4,
+      minLines: minLines ?? 1,
       decoration: InputDecoration(
         isDense: true,
         contentPadding:

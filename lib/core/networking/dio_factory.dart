@@ -26,7 +26,7 @@ class DioFactory {
     dio!.options.headers={
       'Content-Type': 'application/json',
       'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwMjE4MjMzLCJpYXQiOjE3NzAyMTY0MzMsImp0aSI6IjZmNWE0ZjJiMDZjZDQ0MDE5ZjQxMzJkYTdhY2IxMGY0IiwidXNlcl9pZCI6IjI2In0.BqGCO5GCVI9DHHajr4PkX5vn021CaYgVZouasZedZlQ'
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwMzEwOTQwLCJpYXQiOjE3NzAzMDkxNDEsImp0aSI6ImU4M2Q1YThhMzRkMzRkOTRiYjA5M2JkOWExZjMxY2VmIiwidXNlcl9pZCI6IjI2In0.6aRN9qtCS90gy1mlUIo8K67l50_UWKdpE9t4PZJ4cm8'
     };
   }
 

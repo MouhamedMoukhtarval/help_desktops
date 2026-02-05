@@ -10,7 +10,7 @@ extension NavigatorExtension on BuildContext {
       Navigator.of(this).pushReplacementNamed(routeName, arguments: arguments);
 
   /// Back to the previous screen
-  Future<dynamic> pop() async => Navigator.of(this).pop();
+  Future<dynamic> pop([bool? result]) async => Navigator.of(this).pop(result);
 
   /// Transtion and remove all previous screens
   Future<dynamic> pushNamedAndRemoveUntil(

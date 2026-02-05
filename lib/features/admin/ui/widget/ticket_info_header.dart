@@ -7,9 +7,9 @@ class TicketInfoHeader extends StatelessWidget {
   final Ticket ticket;
 
   const TicketInfoHeader({
-    Key? key,
+    super.key,
     required this.ticket,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

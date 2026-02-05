@@ -9,11 +9,11 @@ class UserCard extends StatelessWidget {
   final VoidCallback? onDelete;
 
   const UserCard({
-    Key? key,
+    super.key,
     required this.user,
     this.onEdit,
     this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

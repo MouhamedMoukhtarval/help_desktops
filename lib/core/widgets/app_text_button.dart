@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:help_desktops/core/theming/app_colors_manager.dart';
@@ -13,6 +12,7 @@ class AppTextButton extends StatelessWidget {
   final String buttonText;
   final TextStyle textStyle;
   final VoidCallback? onPressed;
+  final bool? isLoading;
   const AppTextButton({
     super.key,
     this.borderRadius,
@@ -23,15 +23,17 @@ class AppTextButton extends StatelessWidget {
     this.buttonHeight,
     required this.buttonText,
     required this.textStyle,
-    required this.onPressed
-    }
-    );
+    required this.onPressed,
+    this.isLoading,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(backgroundColor ?? AppColorsManager.mainBlue),
+        backgroundColor: WidgetStateProperty.all(
+          backgroundColor ?? AppColorsManager.mainBlue,
+        ),
         padding: WidgetStateProperty.all(
           EdgeInsets.symmetric(
             horizontal: horizontalPadding?.w ?? 16.w,
@@ -39,10 +41,7 @@ class AppTextButton extends StatelessWidget {
           ),
         ),
         fixedSize: WidgetStateProperty.all(
-          Size(
-            buttonWidth?.w ?? double.maxFinite,
-            buttonHeight?.h ?? 52.h,
-          ),
+          Size(buttonWidth?.w ?? double.maxFinite, buttonHeight?.h ?? 52.h),
         ),
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
@@ -50,11 +49,8 @@ class AppTextButton extends StatelessWidget {
           ),
         ),
       ),
-      onPressed: onPressed,
-      child: Text(
-        buttonText,
-        style: textStyle,
-      ),
-      );
+      onPressed: isLoading! ? null : onPressed,
+      child: isLoading! ? const CircularProgressIndicator(color: Color.fromARGB(235, 255, 255, 255)) : Text(buttonText, style: textStyle),
+    );
   }
 }

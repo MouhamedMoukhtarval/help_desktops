@@ -7,9 +7,9 @@ class AddEditUserScreen extends StatefulWidget {
   final User? user; // null = إضافة جديد، موجود = تعديل
 
   const AddEditUserScreen({
-    Key? key,
+    super.key,
     this.user,
-  }) : super(key: key);
+  });
 
   @override
   State<AddEditUserScreen> createState() => _AddEditUserScreenState();

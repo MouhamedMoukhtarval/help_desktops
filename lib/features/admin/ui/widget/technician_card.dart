@@ -9,11 +9,11 @@ class TechnicianCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const TechnicianCard({
-    Key? key,
+    super.key,
     required this.technician,
     required this.isSelected,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
