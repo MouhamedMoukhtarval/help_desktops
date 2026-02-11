@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:help_desktops/core/networking/dio_factory.dart';
+import 'package:help_desktops/features/admin/data/repos/admin_repo.dart';
+import 'package:help_desktops/features/admin/data/services/admin_service.dart';
 import 'package:help_desktops/features/technician/data/repos/ticket_repo.dart';
 import 'package:help_desktops/features/technician/data/services/technician_service.dart';
 import 'package:help_desktops/features/technician/logic/tech_home_cubit.dart';
@@ -26,4 +28,8 @@ Future<void> setupGetIt() async {
   getit.registerLazySingleton<TicketResolveRepos>(
     () => TicketResolveRepos(getit()),
   );
+
+  // Admin
+  getit.registerLazySingleton<AdminService>(() => AdminService(dio));
+  getit.registerLazySingleton<AdminRepo>(() => AdminRepo(getit()));
 }

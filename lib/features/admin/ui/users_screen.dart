@@ -1,9 +1,15 @@
 // lib/features/admin/users_screen.dart
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../core/models/user.dart';
-import 'ui/widget/user_card.dart';
-import 'add_edit_user_screen.dart';
+import 'package:help_desktops/core/di/dependcy_injection.dart';
+import 'package:help_desktops/core/helpers/extensions.dart';
+import 'package:help_desktops/core/networking/api_result.dart';
+import 'package:help_desktops/core/routes/routes.dart';
+import 'package:help_desktops/features/admin/data/repos/admin_repo.dart';
+import '../data/models/user.dart';
+import 'widget/user_card.dart';
+import 'widget/add_edit_user_screen.dart';
 
 class UsersScreen extends StatefulWidget {
   const UsersScreen({super.key});
@@ -14,7 +20,7 @@ class UsersScreen extends StatefulWidget {
 
 class _UsersScreenState extends State<UsersScreen> {
   String _selectedFilter = 'all';
-  late List<User> _allUsers;
+   List<User> _allUsers = [];
 
   @override
   void initState() {
@@ -22,16 +28,22 @@ class _UsersScreenState extends State<UsersScreen> {
     _initializeDummyUsers();
   }
 
-  void _initializeDummyUsers() {
-    _allUsers = [
-      User(id: 1, username: 'Nevisse Admin', email: 'nevisse@company.com', role: 'admin'),
-      User(id: 2, username: 'Sarah Jenkins', email: 'sarah@company.com', role: 'employe'),
-      User(id: 3, username: 'Michael Chen', email: 'michael@company.com', role: 'employe'),
-      User(id: 4, username: 'Emma Wilson', email: 'emma@company.com', role: 'employe'),
-      User(id: 10, username: 'David Ross', email: 'david@company.com', role: 'technicien'),
-      User(id: 11, username: 'David Chen', email: 'davidc@company.com', role: 'technicien'),
-      User(id: 12, username: 'Mika Ross', email: 'mika@company.com', role: 'technicien'),
-    ];
+  Future<void> _initializeDummyUsers() async {
+    final result = await getit<AdminRepo>().getUsersList();
+   result.when
+  (
+      success: (users) {
+        setState(() {
+          _allUsers = users;
+        });
+      },
+      failure: (error) {
+        // Handle error appropriately
+        if (kDebugMode) {
+          print("Error fetching users: $error");
+        }
+      }
+    );
   }
 
   List<User> get _filteredUsers {
@@ -59,7 +71,7 @@ class _UsersScreenState extends State<UsersScreen> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Colors.grey.withValues(alpha: .1),
                     spreadRadius: 1,
                     blurRadius: 3,
                   ),
@@ -82,13 +94,13 @@ class _UsersScreenState extends State<UsersScreen> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.person_add_outlined, color: Colors.grey.shade700),
+                        icon: Icon(
+                          Icons.person_add_outlined,
+                          color: Colors.grey.shade700,
+                        ),
                         onPressed: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AddEditUserScreen(),
-                            ),
+                          final result = await context.pushNamed(
+                            Routes.userEditScreen,
                           );
 
                           if (result != null && result is User) {
@@ -103,10 +115,7 @@ class _UsersScreenState extends State<UsersScreen> {
                   const SizedBox(height: 8),
                   Text(
                     'Total ${_allUsers.length} users',
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
                   ),
                 ],
               ),
@@ -130,34 +139,35 @@ class _UsersScreenState extends State<UsersScreen> {
             Expanded(
               child: _filteredUsers.isEmpty
                   ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.person_off_outlined,
-                      size: 80,
-                      color: Colors.grey.shade300,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'No users found',
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 16,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.person_off_outlined,
+                            size: 80,
+                            color: Colors.grey.shade300,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No users found',
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )
+                    )
                   : ListView.builder(
-                itemCount: _filteredUsers.length,
-                itemBuilder: (context, index) {
-                  return UserCard(
-                    user: _filteredUsers[index],
-                    onEdit: () => _editUser(_filteredUsers[index]),
-                    onDelete: () => _deleteUser(_filteredUsers[index]),
-                  );
-                },
-              ),
+                      itemCount: _filteredUsers.length,
+                      itemBuilder: (context, index) {
+                        return UserCard(
+                          user: _filteredUsers[index],
+                          onEdit: () => _editUser(_filteredUsers[index]),
+                          onDelete: () => _deleteUser(_filteredUsers[index]),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
@@ -199,13 +209,10 @@ class _UsersScreenState extends State<UsersScreen> {
     );
   }
 
-
   void _editUser(User user) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => AddEditUserScreen(user: user),
-      ),
+      MaterialPageRoute(builder: (context) => AddEditUserScreen(user: user)),
     );
 
     if (result != null && result is User) {

@@ -1,7 +1,7 @@
 // lib/features/admin/ui/widget/technician_card.dart
 
 import 'package:flutter/material.dart';
-import '../../../../core/models/user.dart';
+import '../../data/models/user.dart';
 
 class TechnicianCard extends StatelessWidget {
   final User technician;
@@ -31,7 +31,7 @@ class TechnicianCard extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.08),
+              color: Colors.grey.withValues(alpha: .08),
               spreadRadius: 1,
               blurRadius: 3,
               offset: const Offset(0, 1),
