@@ -1,18 +1,21 @@
 // lib/features/admin/assign_technician_screen.dart
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../core/models/ticket.dart';
-import '../../core/models/user.dart';
-import 'ui/widget/ticket_info_header.dart';
-import 'ui/widget/technician_card.dart';
+import 'package:help_desktops/core/di/dependcy_injection.dart';
+import 'package:help_desktops/core/helpers/extensions.dart';
+import 'package:help_desktops/core/networking/api_result.dart';
+import 'package:help_desktops/core/routes/routes.dart';
+import 'package:help_desktops/features/admin/data/repos/admin_repo.dart';
+import '../data/models/ticket.dart';
+import '../data/models/user.dart';
+import 'widget/ticket_info_header.dart';
+import 'widget/technician_card.dart';
 
 class AssignTechnicianScreen extends StatefulWidget {
   final Ticket ticket;
 
-  const AssignTechnicianScreen({
-    super.key,
-    required this.ticket,
-  });
+  const AssignTechnicianScreen({super.key, required this.ticket});
 
   @override
   State<AssignTechnicianScreen> createState() => _AssignTechnicianScreenState();
@@ -21,7 +24,7 @@ class AssignTechnicianScreen extends StatefulWidget {
 class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
   User? _selectedTechnician;
   String _searchQuery = '';
-  late List<User> _allTechnicians;
+  List<User> _allTechnicians = [];
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -30,27 +33,23 @@ class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
     _initializeDummyTechnicians();
   }
 
-  void _initializeDummyTechnicians() {
-    _allTechnicians = [
-      User(
-        id: 10,
-        username: 'Sarah Jenkins',
-        email: 'sarah.j@company.com',
-        role: 'technicien',
-      ),
-      User(
-        id: 11,
-        username: 'David Chen',
-        email: 'david.c@company.com',
-        role: 'technicien',
-      ),
-      User(
-        id: 12,
-        username: 'Mika Ross',
-        email: 'mika.r@company.com',
-        role: 'technicien',
-      ),
-    ];
+  Future<void> _initializeDummyTechnicians() async {
+    final result = await getit<AdminRepo>().getUsersList();
+    result.when(
+      success: (users) {
+        setState(() {
+          _allTechnicians = users
+              .where((user) => user.role == 'technicien')
+              .toList();
+        });
+      },
+      failure: (error) {
+        // Handle error appropriately
+        if (kDebugMode) {
+          print("Error fetching technicians: $error");
+        }
+      },
+    );
   }
 
   List<User> get _filteredTechnicians {
@@ -82,10 +81,7 @@ class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
         ),
         title: const Text(
           'Assign Problem',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Column(
@@ -122,7 +118,7 @@ class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Colors.grey.withValues(alpha: .1),
                     spreadRadius: 1,
                     blurRadius: 3,
                   ),
@@ -155,29 +151,29 @@ class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
           Expanded(
             child: _filteredTechnicians.isEmpty
                 ? Center(
-              child: Text(
-                'No technicians found',
-                style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 14,
-                ),
-              ),
-            )
+                    child: Text(
+                      'No technicians found',
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 14,
+                      ),
+                    ),
+                  )
                 : ListView.builder(
-              itemCount: _filteredTechnicians.length,
-              itemBuilder: (context, index) {
-                final tech = _filteredTechnicians[index];
-                return TechnicianCard(
-                  technician: tech,
-                  isSelected: _selectedTechnician?.id == tech.id,
-                  onTap: () {
-                    setState(() {
-                      _selectedTechnician = tech;
-                    });
-                  },
-                );
-              },
-            ),
+                    itemCount: _filteredTechnicians.length,
+                    itemBuilder: (context, index) {
+                      final tech = _filteredTechnicians[index];
+                      return TechnicianCard(
+                        technician: tech,
+                        isSelected: _selectedTechnician?.id == tech.id,
+                        onTap: () {
+                          setState(() {
+                            _selectedTechnician = tech;
+                          });
+                        },
+                      );
+                    },
+                  ),
           ),
 
           // Confirm Button
@@ -187,7 +183,7 @@ class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Colors.grey.withValues(alpha: .2),
                   spreadRadius: 1,
                   blurRadius: 5,
                   offset: const Offset(0, -2),
@@ -201,8 +197,11 @@ class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
                   onPressed: _selectedTechnician == null
                       ? null
                       : () {
-                    _confirmAssignment();
-                  },
+                          _confirmAssignment(
+                            widget.ticket.id,
+                            _selectedTechnician!.id,
+                          );
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade600,
                     disabledBackgroundColor: Colors.grey.shade300,
@@ -215,10 +214,7 @@ class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
                   ),
                   child: const Text(
                     'Confirm Assignment',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -229,7 +225,7 @@ class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
     );
   }
 
-  void _confirmAssignment() {
+  void _confirmAssignment(int idTicket, int idTech) {
     if (_selectedTechnician == null) return;
 
     showDialog(
@@ -242,8 +238,8 @@ class _AssignTechnicianScreenState extends State<AssignTechnicianScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // Close dialog
-              Navigator.pop(context); // Go back to dashboard
+              getit<AdminRepo>().assignTicket(idTicket, idTech);
+              context.pushNamed(Routes.admin); // Close dialog
             },
             child: const Text('OK'),
           ),

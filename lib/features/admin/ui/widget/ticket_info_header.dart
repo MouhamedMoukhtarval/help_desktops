@@ -1,7 +1,7 @@
 // lib/features/admin/ui/widget/ticket_info_header.dart
 
 import 'package:flutter/material.dart';
-import '../../../../core/models/ticket.dart';
+import '../../data/models/ticket.dart';
 
 class TicketInfoHeader extends StatelessWidget {
   final Ticket ticket;
@@ -22,7 +22,7 @@ class TicketInfoHeader extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: .1),
             spreadRadius: 2,
             blurRadius: 5,
           ),

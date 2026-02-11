@@ -1,7 +1,7 @@
 // lib/features/admin/ui/widget/user_card.dart
 
 import 'package:flutter/material.dart';
-import '../../../../core/models/user.dart';
+import '../../data/models/user.dart';
 
 class UserCard extends StatelessWidget {
   final User user;
@@ -25,7 +25,7 @@ class UserCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: .1),
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -78,7 +78,7 @@ class UserCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: _getRoleColor(user.role).withOpacity(0.1),
+              color: _getRoleColor(user.role).withValues(alpha: .1),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: _getRoleColor(user.role),

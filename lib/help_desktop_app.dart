@@ -17,7 +17,7 @@ class HelpDesktopApp extends StatelessWidget {
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         onGenerateRoute: appRouter.getRoute,
-        initialRoute: Routes.homeScreenTechnician,
+        initialRoute: Routes.admin,
         title: 'Help Desktops',
         theme: ThemeData(
           primaryColor: AppColorsManager.white,

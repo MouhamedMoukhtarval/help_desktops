@@ -1,7 +1,7 @@
 // lib/features/admin/add_edit_user_screen.dart
 
 import 'package:flutter/material.dart';
-import '../../core/models/user.dart';
+import '../../data/models/user.dart';
 
 class AddEditUserScreen extends StatefulWidget {
   final User? user; // null = إضافة جديد، موجود = تعديل
