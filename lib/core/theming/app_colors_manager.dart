@@ -17,4 +17,5 @@ class AppColorsManager {
   static const Color black87 = Color(0xdd000000);
 
   static const Color grayShade700 = Color(0xff707070);
+  
 }

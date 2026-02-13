@@ -107,4 +107,48 @@ class AppTextStyles {
     color: AppColorsManager.grayShade700,
     height: 1.4,
   );
+
+  static TextStyle font24BlueBold = TextStyle(
+    fontSize: 24.sp,
+    fontWeight: AppTextFontWeight.bold,
+    color: AppColorsManager.mainBlue,
+  );
+
+  static TextStyle? font13BlueRegular;
+
+  static TextStyle font16WhiteMedium = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: AppTextFontWeight.medium,
+    color: AppColorsManager.white,
+  );
+
+  static TextStyle font13DarkBlueRegular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColorsManager.darkBlue,
+    fontWeight: AppTextFontWeight.regular,
+  );
+
+  static TextStyle font15DarkBlueMedium = TextStyle(
+    fontSize: 15.sp,
+    color: AppColorsManager.darkBlue,
+    fontWeight: AppTextFontWeight.medium,
+  );
+
+  static TextStyle font14BlueSemiBold = TextStyle(
+    fontSize: 14.sp,
+    color: AppColorsManager.mainBlue,
+    fontWeight: AppTextFontWeight.semiBold,
+  );
+
+  static TextStyle font14GrayRegular = TextStyle(
+    fontSize: 14.sp,
+    color: AppColorsManager.lighterGray,
+    fontWeight: AppTextFontWeight.regular,
+  );
+
+  static TextStyle font16WhiteSemiBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColorsManager.white,
+    fontWeight: AppTextFontWeight.semiBold,
+  );
 }
