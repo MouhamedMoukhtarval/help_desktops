@@ -3,6 +3,11 @@ import 'package:get_it/get_it.dart';
 import 'package:help_desktops/core/networking/dio_factory.dart';
 import 'package:help_desktops/features/admin/data/repos/admin_repo.dart';
 import 'package:help_desktops/features/admin/data/services/admin_service.dart';
+import 'package:help_desktops/features/login/data/repos/login_repo.dart';
+import 'package:help_desktops/features/login/data/services/api_services.dart';
+import 'package:help_desktops/features/login/logic/cubit/login_cubit.dart';
+import 'package:help_desktops/features/sign_up/data/repos/sign_up_repo.dart';
+import 'package:help_desktops/features/sign_up/logic/sign_up_cubit.dart';
 import 'package:help_desktops/features/technician/data/repos/ticket_repo.dart';
 import 'package:help_desktops/features/technician/data/services/technician_service.dart';
 import 'package:help_desktops/features/technician/logic/tech_home_cubit.dart';
@@ -32,4 +37,14 @@ Future<void> setupGetIt() async {
   // Admin
   getit.registerLazySingleton<AdminService>(() => AdminService(dio));
   getit.registerLazySingleton<AdminRepo>(() => AdminRepo(getit()));
+
+  // Login
+  getit.registerLazySingleton<ApiServices>(() => ApiServices(dio));
+  getit.registerLazySingleton<LoginRepo>(() => LoginRepo(getit()));
+  getit.registerFactory<LoginCubit>(() => LoginCubit(getit()));
+
+  // Sign up
+  getit.registerLazySingleton<SignUpRepo>(() => SignUpRepo(getit()));
+  getit.registerFactory<SignUpCubit>(() => SignUpCubit(getit()));
+
 }

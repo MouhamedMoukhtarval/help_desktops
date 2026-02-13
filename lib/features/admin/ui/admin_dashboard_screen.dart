@@ -1,5 +1,6 @@
 // lib/features/admin/admin_dashboard_screen.dart
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:help_desktops/core/di/dependcy_injection.dart';
@@ -50,7 +51,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       },
       failure: (error) {
         // Handle error appropriately
-        print("Error fetching tickets: $error");
+        if (kDebugMode) {
+          print("Error fetching tickets: $error");
+        }
       }
     );
    

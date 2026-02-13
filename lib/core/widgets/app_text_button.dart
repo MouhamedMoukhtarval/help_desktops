@@ -49,8 +49,8 @@ class AppTextButton extends StatelessWidget {
           ),
         ),
       ),
-      onPressed: isLoading! ? null : onPressed,
-      child: isLoading! ? const CircularProgressIndicator(color: Color.fromARGB(235, 255, 255, 255)) : Text(buttonText, style: textStyle),
+      onPressed:  onPressed,
+      child:  Text(buttonText, style: textStyle),
     );
   }
 }

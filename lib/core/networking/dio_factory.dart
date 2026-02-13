@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:help_desktops/core/helpers/constants_keys.dart';
+import 'package:help_desktops/core/helpers/flutter_shared_preference_helper.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioFactory {
@@ -22,15 +24,25 @@ class DioFactory {
       return dio!;
     }
   }
-  static void addHeaders(){
-    dio!.options.headers={
-      'Content-Type': 'application/json',
-      'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwODIzNDQ4LCJpYXQiOjE3NzA4MjE2NDgsImp0aSI6IjBiZmFkZTQyOGUwMTQxYjU4NTliMmNhZmVhNWU5M2IxIiwidXNlcl9pZCI6IjI4In0.YQ071elYmJdtC1tt6K1mh766aJ79i_anMJTshg1y0B4'
-    };
+
+  static void addHeaders() async {
+    dio!.options.headers = {'Content-Type': 'application/json'};
   }
 
   static void addDioInterceptor() {
+    dio!.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          String? token = await FlutterSharedPreferenceHelper.getSecureToken(
+            SharedPreferenceKeys.userToken,
+          );
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+      ),
+    );
     dio!.interceptors.add(
       PrettyDioLogger(
         requestBody: true,
@@ -39,5 +51,4 @@ class DioFactory {
       ),
     );
   }
-
 }
