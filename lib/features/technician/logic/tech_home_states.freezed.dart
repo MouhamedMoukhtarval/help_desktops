@@ -128,12 +128,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<TicketResponse> tickets,  String selectedStatus,  String selectedPriority,  DateTime? dateFrom,  DateTime? dateTo)?  success,TResult Function( String? message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( TicketStartWorkResponse? ticketSWR,  List<TicketResponse?>? tickets,  String selectedStatus,  String selectedPriority,  DateTime? dateFrom,  DateTime? dateTo)?  success,TResult Function( String? message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Success() when success != null:
-return success(_that.tickets,_that.selectedStatus,_that.selectedPriority,_that.dateFrom,_that.dateTo);case Error() when error != null:
+return success(_that.ticketSWR,_that.tickets,_that.selectedStatus,_that.selectedPriority,_that.dateFrom,_that.dateTo);case Error() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -152,12 +152,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<TicketResponse> tickets,  String selectedStatus,  String selectedPriority,  DateTime? dateFrom,  DateTime? dateTo)  success,required TResult Function( String? message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( TicketStartWorkResponse? ticketSWR,  List<TicketResponse?>? tickets,  String selectedStatus,  String selectedPriority,  DateTime? dateFrom,  DateTime? dateTo)  success,required TResult Function( String? message)  error,}) {final _that = this;
 switch (_that) {
 case Initial():
 return initial();case Loading():
 return loading();case Success():
-return success(_that.tickets,_that.selectedStatus,_that.selectedPriority,_that.dateFrom,_that.dateTo);case Error():
+return success(_that.ticketSWR,_that.tickets,_that.selectedStatus,_that.selectedPriority,_that.dateFrom,_that.dateTo);case Error():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +175,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<TicketResponse> tickets,  String selectedStatus,  String selectedPriority,  DateTime? dateFrom,  DateTime? dateTo)?  success,TResult? Function( String? message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( TicketStartWorkResponse? ticketSWR,  List<TicketResponse?>? tickets,  String selectedStatus,  String selectedPriority,  DateTime? dateFrom,  DateTime? dateTo)?  success,TResult? Function( String? message)?  error,}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Success() when success != null:
-return success(_that.tickets,_that.selectedStatus,_that.selectedPriority,_that.dateFrom,_that.dateTo);case Error() when error != null:
+return success(_that.ticketSWR,_that.tickets,_that.selectedStatus,_that.selectedPriority,_that.dateFrom,_that.dateTo);case Error() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -257,14 +257,17 @@ String toString() {
 
 
 class Success implements TechHomeStates {
-  const Success({required final  List<TicketResponse> tickets, this.selectedStatus = 'active', this.selectedPriority = 'all', this.dateFrom, this.dateTo}): _tickets = tickets;
+  const Success({this.ticketSWR, final  List<TicketResponse?>? tickets, this.selectedStatus = 'active', this.selectedPriority = 'all', this.dateFrom, this.dateTo}): _tickets = tickets;
   
 
- final  List<TicketResponse> _tickets;
- List<TicketResponse> get tickets {
+ final  TicketStartWorkResponse? ticketSWR;
+ final  List<TicketResponse?>? _tickets;
+ List<TicketResponse?>? get tickets {
+  final value = _tickets;
+  if (value == null) return null;
   if (_tickets is EqualUnmodifiableListView) return _tickets;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_tickets);
+  return EqualUnmodifiableListView(value);
 }
 
 @JsonKey() final  String selectedStatus;
@@ -282,16 +285,16 @@ $SuccessCopyWith<Success> get copyWith => _$SuccessCopyWithImpl<Success>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Success&&const DeepCollectionEquality().equals(other._tickets, _tickets)&&(identical(other.selectedStatus, selectedStatus) || other.selectedStatus == selectedStatus)&&(identical(other.selectedPriority, selectedPriority) || other.selectedPriority == selectedPriority)&&(identical(other.dateFrom, dateFrom) || other.dateFrom == dateFrom)&&(identical(other.dateTo, dateTo) || other.dateTo == dateTo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Success&&(identical(other.ticketSWR, ticketSWR) || other.ticketSWR == ticketSWR)&&const DeepCollectionEquality().equals(other._tickets, _tickets)&&(identical(other.selectedStatus, selectedStatus) || other.selectedStatus == selectedStatus)&&(identical(other.selectedPriority, selectedPriority) || other.selectedPriority == selectedPriority)&&(identical(other.dateFrom, dateFrom) || other.dateFrom == dateFrom)&&(identical(other.dateTo, dateTo) || other.dateTo == dateTo));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_tickets),selectedStatus,selectedPriority,dateFrom,dateTo);
+int get hashCode => Object.hash(runtimeType,ticketSWR,const DeepCollectionEquality().hash(_tickets),selectedStatus,selectedPriority,dateFrom,dateTo);
 
 @override
 String toString() {
-  return 'TechHomeStates.success(tickets: $tickets, selectedStatus: $selectedStatus, selectedPriority: $selectedPriority, dateFrom: $dateFrom, dateTo: $dateTo)';
+  return 'TechHomeStates.success(ticketSWR: $ticketSWR, tickets: $tickets, selectedStatus: $selectedStatus, selectedPriority: $selectedPriority, dateFrom: $dateFrom, dateTo: $dateTo)';
 }
 
 
@@ -302,7 +305,7 @@ abstract mixin class $SuccessCopyWith<$Res> implements $TechHomeStatesCopyWith<$
   factory $SuccessCopyWith(Success value, $Res Function(Success) _then) = _$SuccessCopyWithImpl;
 @useResult
 $Res call({
- List<TicketResponse> tickets, String selectedStatus, String selectedPriority, DateTime? dateFrom, DateTime? dateTo
+ TicketStartWorkResponse? ticketSWR, List<TicketResponse?>? tickets, String selectedStatus, String selectedPriority, DateTime? dateFrom, DateTime? dateTo
 });
 
 
@@ -319,10 +322,11 @@ class _$SuccessCopyWithImpl<$Res>
 
 /// Create a copy of TechHomeStates
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? tickets = null,Object? selectedStatus = null,Object? selectedPriority = null,Object? dateFrom = freezed,Object? dateTo = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? ticketSWR = freezed,Object? tickets = freezed,Object? selectedStatus = null,Object? selectedPriority = null,Object? dateFrom = freezed,Object? dateTo = freezed,}) {
   return _then(Success(
-tickets: null == tickets ? _self._tickets : tickets // ignore: cast_nullable_to_non_nullable
-as List<TicketResponse>,selectedStatus: null == selectedStatus ? _self.selectedStatus : selectedStatus // ignore: cast_nullable_to_non_nullable
+ticketSWR: freezed == ticketSWR ? _self.ticketSWR : ticketSWR // ignore: cast_nullable_to_non_nullable
+as TicketStartWorkResponse?,tickets: freezed == tickets ? _self._tickets : tickets // ignore: cast_nullable_to_non_nullable
+as List<TicketResponse?>?,selectedStatus: null == selectedStatus ? _self.selectedStatus : selectedStatus // ignore: cast_nullable_to_non_nullable
 as String,selectedPriority: null == selectedPriority ? _self.selectedPriority : selectedPriority // ignore: cast_nullable_to_non_nullable
 as String,dateFrom: freezed == dateFrom ? _self.dateFrom : dateFrom // ignore: cast_nullable_to_non_nullable
 as DateTime?,dateTo: freezed == dateTo ? _self.dateTo : dateTo // ignore: cast_nullable_to_non_nullable

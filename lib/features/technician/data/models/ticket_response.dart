@@ -14,6 +14,7 @@ class TicketResponse {
   String? description;
   @JsonKey(name: 'priorite')
   String? priority;
+  @JsonKey(name: 'statut')
   String? status;
   @JsonKey(name: 'piece_jointe')
   String? pieceJointe;
@@ -35,6 +36,15 @@ class TicketResponse {
     this.dateResolution,
   });
   factory TicketResponse.fromJson(Map<String, dynamic> json) => _$TicketResponseFromJson(json);
+}
+@JsonSerializable()
+class TicketStartWorkResponse {
+  String ? message;
+  @JsonKey(name: 'ticket')
+  TicketResponse ? ticketSWR;
+  TicketStartWorkResponse({this.message, this.ticketSWR});
+  factory TicketStartWorkResponse.fromJson(Map<String, dynamic> json) =>
+      _$TicketStartWorkResponseFromJson(json);
 }
 
 @JsonSerializable()

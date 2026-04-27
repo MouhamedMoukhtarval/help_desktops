@@ -16,7 +16,7 @@ class TicketRepo {
     return ApiResult.failure(ApiErrorHandler.handle(e));
   }
   }
-  Future<ApiResult<TicketResponse>> updateTicketStatus(int ticketId, String status) async {
+  Future<ApiResult<TicketStartWorkResponse>> updateTicketStatus(int ticketId, String status) async {
     try{
     final ticket = await _ticketService.updateTicketStatus(ticketId, {'statut': status});
     return ApiResult.success(ticket);

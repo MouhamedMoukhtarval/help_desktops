@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: unused_element
-
 part of 'ticket_response.dart';
 
 // **************************************************************************
@@ -20,7 +18,7 @@ TicketResponse _$TicketResponseFromJson(Map<String, dynamic> json) =>
       title: json['titre'] as String?,
       description: json['description'] as String?,
       priority: json['priorite'] as String?,
-      status: json['status'] as String?,
+      status: json['statut'] as String?,
       pieceJointe: json['piece_jointe'] as String?,
       dateCreation: json['date_creation'] as String?,
       dateResolution: json['date_resolution'] as String?,
@@ -34,11 +32,27 @@ Map<String, dynamic> _$TicketResponseToJson(TicketResponse instance) =>
       'titre': instance.title,
       'description': instance.description,
       'priorite': instance.priority,
-      'status': instance.status,
+      'statut': instance.status,
       'piece_jointe': instance.pieceJointe,
       'date_creation': instance.dateCreation,
       'date_resolution': instance.dateResolution,
     };
+
+TicketStartWorkResponse _$TicketStartWorkResponseFromJson(
+  Map<String, dynamic> json,
+) => TicketStartWorkResponse(
+  message: json['message'] as String?,
+  ticketSWR: json['ticket'] == null
+      ? null
+      : TicketResponse.fromJson(json['ticket'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$TicketStartWorkResponseToJson(
+  TicketStartWorkResponse instance,
+) => <String, dynamic>{
+  'message': instance.message,
+  'ticket': instance.ticketSWR,
+};
 
 Employee _$EmployeeFromJson(Map<String, dynamic> json) => Employee(
   id: (json['id'] as num?)?.toInt(),

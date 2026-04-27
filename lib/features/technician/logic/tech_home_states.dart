@@ -7,7 +7,8 @@ class TechHomeStates with _$TechHomeStates {
     const factory TechHomeStates.initial() = Initial;
     const factory TechHomeStates.loading() = Loading;
     const factory TechHomeStates.success({
-      required List<TicketResponse> tickets,
+      TicketStartWorkResponse? ticketSWR,
+      List<TicketResponse?>? tickets,
       @Default('active') String selectedStatus,
       @Default('all') String selectedPriority,
       DateTime? dateFrom,

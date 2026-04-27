@@ -1,17 +1,17 @@
 // lib/features/admin/ui/widget/ticket_card.dart
 
 import 'package:flutter/material.dart';
-import '../../../../core/models/ticket.dart';
+import '../../data/models/ticket.dart';
 
 class TicketCard extends StatelessWidget {
   final Ticket ticket;
   final VoidCallback onAssignTap;
 
   const TicketCard({
-    Key? key,
+    super.key,
     required this.ticket,
     required this.onAssignTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class TicketCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: .1),
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -63,7 +63,7 @@ class TicketCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      _formatDate(ticket.dateCreation),
+                      _formatDate(ticket.dateCreation!),
                       style: TextStyle(
                         color: Colors.grey.shade600,
                         fontSize: 12,

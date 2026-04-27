@@ -1,37 +1,49 @@
 import 'package:dio/dio.dart';
+import 'package:help_desktops/core/helpers/constants_keys.dart';
+import 'package:help_desktops/core/helpers/flutter_shared_preference_helper.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioFactory {
   /// private constructor as I don't want to allow creating an instance of this class
   DioFactory._();
 
-  static Dio? _dio;
+  static Dio? dio;
 
   static Dio getDio() {
     Duration timeout = const Duration(seconds: 30);
 
-    if (_dio == null) {
-      _dio = Dio();
-      _dio!
+    if (dio == null) {
+      dio = Dio();
+      dio!
         ..options.connectTimeout = timeout
         ..options.receiveTimeout = timeout;
       addHeaders();
       addDioInterceptor();
-      return _dio!;
+      return dio!;
     } else {
-      return _dio!;
+      return dio!;
     }
   }
-  static void addHeaders(){
-    _dio!.options.headers={
-      'Content-Type':'application/json',
-      'Accept':'application/json',
-      'Authorization':'Bearer YOUR_TOKEN'
-    };
+
+  static void addHeaders() async {
+    dio!.options.headers = {'Content-Type': 'application/json'};
   }
 
   static void addDioInterceptor() {
-    _dio?.interceptors.add(
+    dio!.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          String? token = await FlutterSharedPreferenceHelper.getSecureToken(
+            SharedPreferenceKeys.userToken,
+          );
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+      ),
+    );
+    dio!.interceptors.add(
       PrettyDioLogger(
         requestBody: true,
         requestHeader: true,
@@ -39,5 +51,4 @@ class DioFactory {
       ),
     );
   }
-
 }

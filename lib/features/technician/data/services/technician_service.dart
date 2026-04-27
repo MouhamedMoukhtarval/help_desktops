@@ -13,8 +13,8 @@ abstract class TicketService {
   Future<List<TicketResponse>> getTechnicianDashboard();
 
   @POST(EndpointsConstant.updateTicketStatus)
-  Future<TicketResponse> updateTicketStatus(
-    @Path('id') int ticketId,
+  Future<TicketStartWorkResponse> updateTicketStatus(
+    @Path('ticketId') int ticketId,
     @Body() Map<String, String> statusUpdate,
   );
 }
